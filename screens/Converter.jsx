@@ -1,5 +1,12 @@
 import React from "react";
-import { StyleSheet, ScrollView, Text, TouchableOpacity } from "react-native";
+import {
+  StyleSheet,
+  ScrollView,
+  Text,
+  TouchableOpacity,
+  Pressable,
+  KeyboardAvoidingView,
+} from "react-native";
 import { AntDesign } from "@expo/vector-icons";
 import Currency from "../components/Currency";
 
@@ -40,6 +47,13 @@ const currencyData = [
     currency_symbol: "$U",
     active: false,
   },
+
+  {
+    iso: "GMD",
+    currency_name: "Gambian Dalasis",
+    is_obsolete: false,
+    active: false,
+  },
 ];
 
 function Converter() {
@@ -65,7 +79,6 @@ function Converter() {
           iso: `TST${prevCurrencies.length + 1}`,
           currency_name: `Test Money ${prevCurrencies.length + 1}`,
           is_obsolete: false,
-          currency_symbol: "*&*",
           active: false,
         },
       ];
@@ -73,27 +86,35 @@ function Converter() {
   }
 
   return (
-    <ScrollView style={styles.container}>
-      {currencies.map((currency) => (
-        <Currency
-          key={currency.iso}
-          active={currency.active}
-          iso={currency.iso}
-          symbol={currency.currency_symbol}
-          handleSetCurrency={handleSetCurrency}
-        />
-      ))}
-      <TouchableOpacity onPress={addCurrency} style={styles.addCurrency}>
-        <AntDesign name="plus" size={16} color="#059BFF" />
-        <Text style={styles.text}>Add Currency</Text>
-      </TouchableOpacity>
-    </ScrollView>
+    <KeyboardAvoidingView
+      // behavior={Platform.OS === "ios" ? "padding" : "height"}
+      behavior={"height"}
+      keyboardVerticalOffset={50}
+      style={{flex: 1}}
+    >
+      <ScrollView style={styles.container}>
+        {currencies.map((currency) => (
+          <Currency
+            key={currency.iso}
+            active={currency.active}
+            iso={currency.iso}
+            symbol={currency.currency_symbol}
+            handleSetCurrency={handleSetCurrency}
+          />
+        ))}
+        <Pressable onPress={addCurrency} style={styles.addCurrency}>
+          <AntDesign name="plus" size={16} color="#059BFF" />
+          <Text style={styles.text}>Add Currency</Text>
+        </Pressable>
+      </ScrollView>
+    </KeyboardAvoidingView>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    padding: 15,
+    flex: 1,
+    paddingHorizontal: 15,
   },
 
   addCurrency: {

@@ -1,24 +1,40 @@
-import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
-import React from "react";
 import {
-  MaterialCommunityIcons,
-  Ionicons,
-  FontAwesome,
-  Entypo,
-} from "@expo/vector-icons";
+  View,
+  Text,
+  StyleSheet,
+  TouchableOpacity,
+  TextInput,
+} from "react-native";
+import React, { useRef } from "react";
+import { Ionicons, FontAwesome, Entypo } from "@expo/vector-icons";
 
 const Send = () => {
   return (
     <View style={styles.send}>
-      <FontAwesome name="send-o" size={20} color="#ffffde" />
-      <Text style={styles.sendText}>Send USD to GMD</Text>
-      <Text style={styles.sendText}>view quote</Text>
-      <Entypo name="chevron-thin-right" size={18} color="#ffffde" />
+      <View style={styles.sendLeft}>
+        <FontAwesome
+          name="send-o"
+          size={20}
+          color="#ffffde"
+          style={{ marginRight: 10 }}
+        />
+        <Text style={styles.sendText}>Send USD to GMD</Text>
+      </View>
+      <View style={styles.sendRight}>
+        <Text style={styles.sendText}>view quote</Text>
+        <Entypo
+          name="chevron-thin-right"
+          size={18}
+          color="#ffffde"
+          style={{ marginLeft: 10 }}
+        />
+      </View>
     </View>
   );
 };
 
 function Currency({ iso, symbol, active, handleSetCurrency }) {
+  let inputRef = useRef(null);
   return (
     <View
       style={
@@ -48,11 +64,23 @@ function Currency({ iso, symbol, active, handleSetCurrency }) {
         <TouchableOpacity
           onPress={() => {
             handleSetCurrency(iso);
+            inputRef.current.focus();
           }}
           style={styles.exchange}
         >
-          <Text style={styles.amount}>{symbol}0.00</Text>
-          <Text style={styles.rate}>1 USD = 60 GMD</Text>
+          <View style={{flexDirection: 'row'}}>
+            <Text style={styles.amount}>{symbol ? symbol : iso}</Text>
+            <TextInput
+              ref={inputRef}
+              keyboardType="decimal-pad"
+              style={styles.amount}
+              placeholder="0.00"
+              textAlign="right"
+              onFocus={() => {handleSetCurrency(iso)}}
+            />
+          </View>
+
+          {!active && <Text style={styles.rate}>1 USD = 60 GMD</Text>}
         </TouchableOpacity>
 
         <TouchableOpacity style={styles.keypadButton}>
@@ -103,12 +131,10 @@ const styles = StyleSheet.create({
     paddingLeft: 12,
   },
 
-  notActive: {},
-
   currencySelection: {
     flexDirection: "row",
     alignItems: "center",
-    paddingVertical: 16,
+    paddingVertical: 18,
     flex: 1,
   },
 
@@ -150,6 +176,21 @@ const styles = StyleSheet.create({
     alignItems: "center",
     margin: 10,
   },
+
+  sendLeft: {
+    flex: 1,
+    flexDirection: "row",
+    alignItems: "center",
+  },
+
+  sendRight: {
+    flex: 1,
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "flex-end",
+  },
+
+  marginRight: { marginRight: 10 },
 
   sendText: {
     color: "#ffffde",
