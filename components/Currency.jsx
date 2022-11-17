@@ -1,6 +1,11 @@
 import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import React from "react";
-import { AntDesign, Ionicons, FontAwesome, Entypo } from "@expo/vector-icons";
+import {
+  MaterialCommunityIcons,
+  Ionicons,
+  FontAwesome,
+  Entypo,
+} from "@expo/vector-icons";
 
 const Send = () => {
   return (
@@ -13,7 +18,7 @@ const Send = () => {
   );
 };
 
-function Currency({ iso, symbol, active }) {
+function Currency({ iso, symbol, active, handleSetCurrency }) {
   return (
     <View
       style={
@@ -28,20 +33,38 @@ function Currency({ iso, symbol, active }) {
       }
     >
       <View style={styles.card}>
-        <TouchableOpacity style={styles.currencySelection}>
+        <TouchableOpacity
+          onPress={() => {
+            handleSetCurrency(iso);
+          }}
+          style={styles.currencySelection}
+        >
           <Ionicons name="person-circle-outline" size={24} color="black" />
           <Text style={styles.currencyName}>{iso}</Text>
           {active && (
             <Entypo name="chevron-thin-down" size={18} color="#242424aa" />
           )}
         </TouchableOpacity>
-        <TouchableOpacity style={styles.exchange}>
+        <TouchableOpacity
+          onPress={() => {
+            handleSetCurrency(iso);
+          }}
+          style={styles.exchange}
+        >
           <Text style={styles.amount}>{symbol}0.00</Text>
           <Text style={styles.rate}>1 USD = 60 GMD</Text>
         </TouchableOpacity>
 
         <TouchableOpacity style={styles.keypadButton}>
-          <Ionicons name="ios-calculator-outline" size={27} color="#24242455" />
+          {active ? (
+            <Ionicons
+              name="ios-calculator-outline"
+              size={27}
+              color="#24242455"
+            />
+          ) : (
+            <Entypo name="dots-three-vertical" size={24} color="#24242455" />
+          )}
         </TouchableOpacity>
       </View>
 
