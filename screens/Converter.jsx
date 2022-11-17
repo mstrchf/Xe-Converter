@@ -45,6 +45,33 @@ const currencyData = [
 function Converter() {
   const [currencies, setCurrencies] = React.useState(currencyData);
 
+  function handleSetCurrency(iso) {
+    setCurrencies((prevCurrencies) => {
+      return prevCurrencies.map((currency) => {
+        if (currency.iso === iso) {
+          return { ...currency, active: true };
+        } else {
+          return { ...currency, active: false };
+        }
+      });
+    });
+  }
+
+  function addCurrency() {
+    setCurrencies((prevCurrencies) => {
+      return [
+        ...prevCurrencies,
+        {
+          iso: `TST${prevCurrencies.length + 1}`,
+          currency_name: `Test Money ${prevCurrencies.length + 1}`,
+          is_obsolete: false,
+          currency_symbol: "*&*",
+          active: false,
+        },
+      ];
+    });
+  }
+
   return (
     <ScrollView style={styles.container}>
       {currencies.map((currency) => (
@@ -53,9 +80,10 @@ function Converter() {
           active={currency.active}
           iso={currency.iso}
           symbol={currency.currency_symbol}
+          handleSetCurrency={handleSetCurrency}
         />
       ))}
-      <TouchableOpacity style={styles.addCurrency}>
+      <TouchableOpacity onPress={addCurrency} style={styles.addCurrency}>
         <AntDesign name="plus" size={16} color="#059BFF" />
         <Text style={styles.text}>Add Currency</Text>
       </TouchableOpacity>
@@ -69,7 +97,7 @@ const styles = StyleSheet.create({
   },
 
   addCurrency: {
-    backgroundColor: "#42ABF112",
+    backgroundColor: "#42ABF122",
     borderRadius: 5,
     padding: 15,
     marginBottom: 25,
