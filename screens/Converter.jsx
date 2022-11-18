@@ -11,27 +11,7 @@ import { AntDesign } from "@expo/vector-icons";
 import Currency from "../components/Currency";
 
 const currencyData = [
-  {
-    iso: "TTD",
-    currency_name: "Trinidadian Dollar",
-    is_obsolete: false,
-    currency_symbol: "TT$",
-    active: true,
-  },
-  {
-    iso: "TVD",
-    currency_name: "Tuvaluan Dollar",
-    is_obsolete: false,
-    currency_symbol: "$",
-    active: false,
-  },
-  {
-    iso: "TWD",
-    currency_name: "Taiwan New Dollar",
-    is_obsolete: false,
-    currency_symbol: "NT$",
-    active: false,
-  },
+
 
   {
     iso: "USD",
@@ -41,18 +21,25 @@ const currencyData = [
     active: false,
   },
   {
-    iso: "UYU",
-    currency_name: "Uruguayan Peso",
-    is_obsolete: false,
-    currency_symbol: "$U",
-    active: false,
+    "iso": "GBP",
+    "currency_name": "British Pound",
+    "is_obsolete": false,
+    "currency_symbol": "£",
+    "currency_symbol_on_right": false
   },
 
   {
     iso: "GMD",
     currency_name: "Gambian Dalasis",
     is_obsolete: false,
-    active: false,
+    active: true,
+  },
+  {
+    "iso": "EUR",
+    "currency_name": "Euro",
+    "is_obsolete": false,
+    "currency_symbol": "€",
+    "currency_symbol_on_right": false
   },
 ];
 
@@ -76,7 +63,7 @@ function Converter() {
       return [
         ...prevCurrencies,
         {
-          iso: `TST${prevCurrencies.length + 1}`,
+          iso: `&${prevCurrencies.length + 1}`,
           currency_name: `Test Money ${prevCurrencies.length + 1}`,
           is_obsolete: false,
           active: false,
@@ -87,10 +74,9 @@ function Converter() {
 
   return (
     <KeyboardAvoidingView
-      // behavior={Platform.OS === "ios" ? "padding" : "height"}
-      behavior={"height"}
-      keyboardVerticalOffset={50}
-      style={{flex: 1}}
+      behavior={Platform.OS === "ios" ? "padding" : "height"}
+      keyboardVerticalOffset={65}
+      style={{ flex: 1 }}
     >
       <ScrollView style={styles.container}>
         {currencies.map((currency) => (
@@ -121,7 +107,8 @@ const styles = StyleSheet.create({
     backgroundColor: "#42ABF122",
     borderRadius: 5,
     padding: 15,
-    marginBottom: 25,
+    marginTop: 10,
+    marginBottom: 20,
     flexDirection: "row",
     justifyContent: "center",
     alignItems: "center",
