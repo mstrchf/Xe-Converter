@@ -33,7 +33,7 @@ const Send = () => {
   );
 };
 
-export default function Currency({ iso, symbol, active, handleSetCurrency }) {
+export default function Currency({ iso, symbol, active, handleSetCurrency, navigation }) {
   let inputRef = useRef(null);
 
 
@@ -53,7 +53,8 @@ export default function Currency({ iso, symbol, active, handleSetCurrency }) {
       <View style={styles.card}>
         <TouchableOpacity
           onPress={() => {
-            handleSetCurrency(iso);
+
+            active ? navigation.navigate('Currencies') : handleSetCurrency(iso);
           }}
           style={styles.currencySelection}
         >

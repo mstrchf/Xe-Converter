@@ -9,7 +9,7 @@ import {
 } from "react-native";
 import { AntDesign } from "@expo/vector-icons";
 import Currency from "../components/Currency";
-function Converter() {
+function Converter({navigation}) {
   const [currencies, setCurrencies] = React.useState([]);
   async function getCurrencies() {
     const options = {
@@ -77,6 +77,7 @@ function Converter() {
               iso={currency.iso}
               symbol={currency.currency_symbol}
               handleSetCurrency={handleSetCurrency}
+              navigation={navigation}
             />
           ))
         )}

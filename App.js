@@ -5,6 +5,7 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import React from "react";
 const logo = require('./assets/xe.png') 
 import Converter from "./screens/Converter";
+import Currencies from "./screens/Currencies"
 
 function HomeScreen({ navigation }) {
   return (
@@ -61,10 +62,10 @@ export default function App() {
     <Loader />
   ) : (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName="Main">
-        <Stack.Screen name="Home" component={HomeScreen} />
+      <Stack.Navigator initialRouteName="Convert">
+        <Stack.Screen name="Currencies" component={Currencies} />
         <Stack.Screen
-          name="Main"
+          name="Convert"
           component={Converter}
           options={{
             title: "Xe Currency",
