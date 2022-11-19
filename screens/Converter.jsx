@@ -5,67 +5,34 @@ import {
   Text,
   Pressable,
   KeyboardAvoidingView,
+  ActivityIndicator,
 } from "react-native";
 import { AntDesign } from "@expo/vector-icons";
 import Currency from "../components/Currency";
-
-const currencyData = [
-
-
-  {
-    iso: "USD",
-    currency_name: "US Dollar",
-    is_obsolete: false,
-    currency_symbol: "$",
-    active: false,
-  },
-  {
-    "iso": "GBP",
-    "currency_name": "British Pound",
-    "is_obsolete": false,
-    "currency_symbol": "£",
-    "currency_symbol_on_right": false
-  },
-
-  {
-    iso: "GMD",
-    currency_name: "Gambian Dalasis",
-    is_obsolete: false,
-    active: true,
-  },
-  {
-    "iso": "EUR",
-    "currency_name": "Euro",
-    "is_obsolete": false,
-    "currency_symbol": "€",
-    "currency_symbol_on_right": false
-  },
-];
-
 function Converter() {
   const [currencies, setCurrencies] = React.useState([]);
   async function getCurrencies() {
     const options = {
-      method: 'GET',
+      method: "GET",
       headers: {
-        'accept': 'application/json',
-        'Authorization': 'Basic bWFyaW5haW50ZXJuYXRpb25hbHNjaG9vbDU1MzgxMDkzMjphaTJsdjE0cW5pNmdyMGZ2MWJvNWVhY3Q5aw=='
-      }
+        accept: "application/json",
+        Authorization:
+          "Basic bWFyaW5haW50ZXJuYXRpb25hbHNjaG9vbDU1MzgxMDkzMjphaTJsdjE0cW5pNmdyMGZ2MWJvNWVhY3Q5aw==",
+      },
     };
-    
-    const response = await fetch('https://xecdapi.xe.com/v1/currencies?additionalInfo=symbol', options)
-    const data = await response.json()
-    const myData = data.currencies
-    setCurrencies(myData.slice(0, 5))
+
+    const response = await fetch(
+      "https://xecdapi.xe.com/v1/currencies?additionalInfo=symbol",
+      options
+    );
+    const data = await response.json();
+    const myData = data.currencies;
+    setCurrencies(myData.slice(0, 5));
   }
 
-
-
   React.useEffect(() => {
-    getCurrencies()
+    getCurrencies();
   }, []);
-
-// getCurrencies()
 
   function handleSetCurrency(iso) {
     setCurrencies((prevCurrencies) => {
@@ -100,15 +67,19 @@ function Converter() {
       style={{ flex: 1 }}
     >
       <ScrollView style={styles.container}>
-        {currencies.map((currency) => (
-          <Currency
-            key={currency.iso}
-            active={currency.active}
-            iso={currency.iso}
-            symbol={currency.currency_symbol}
-            handleSetCurrency={handleSetCurrency}
-          />
-        ))}
+        {currencies.length < 1 ? (
+          <ActivityIndicator />
+        ) : (
+          currencies.map((currency) => (
+            <Currency
+              key={currency.iso}
+              active={currency.active}
+              iso={currency.iso}
+              symbol={currency.currency_symbol}
+              handleSetCurrency={handleSetCurrency}
+            />
+          ))
+        )}
         <Pressable onPress={addCurrency} style={styles.addCurrency}>
           <AntDesign name="plus" size={16} color="#059BFF" />
           <Text style={styles.text}>Add Currency</Text>
