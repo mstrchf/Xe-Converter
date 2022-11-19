@@ -33,8 +33,10 @@ const Send = () => {
   );
 };
 
-function Currency({ iso, symbol, active, handleSetCurrency }) {
+export default function Currency({ iso, symbol, active, handleSetCurrency }) {
   let inputRef = useRef(null);
+
+
   return (
     <View
       style={
@@ -68,15 +70,19 @@ function Currency({ iso, symbol, active, handleSetCurrency }) {
           }}
           style={styles.exchange}
         >
-          <View style={{flexDirection: 'row', flexWrap:'wrap'}}>
-            <Text style={[styles.amount, {marginRight: 5}]}>{symbol ? symbol : iso}</Text>
+          <View style={{ flexDirection: "row", flexWrap: "wrap" }}>
+            <Text style={[styles.amount, { marginRight: 5 }]}>
+              {symbol ? symbol : iso}
+            </Text>
             <TextInput
               ref={inputRef}
               keyboardType="decimal-pad"
               style={styles.amount}
               placeholder="0.00"
               textAlign="right"
-              onFocus={() => {handleSetCurrency(iso)}}
+              onFocus={() => {
+                handleSetCurrency(iso);
+              }}
               maxLength={9}
             />
           </View>
@@ -84,7 +90,12 @@ function Currency({ iso, symbol, active, handleSetCurrency }) {
           {!active && <Text style={styles.rate}>1 USD = 60 GMD</Text>}
         </TouchableOpacity>
 
-        <TouchableOpacity onPress={() => {inputRef.current.focus();}} style={styles.keypadButton}>
+        <TouchableOpacity
+          onPress={() => {
+            inputRef.current.focus();
+          }}
+          style={styles.keypadButton}
+        >
           {active ? (
             <Ionicons
               name="ios-calculator-outline"
@@ -137,7 +148,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     paddingVertical: 18,
     flex: 1,
-    zIndex: 5
+    zIndex: 5,
   },
 
   currencyName: {
@@ -156,7 +167,6 @@ const styles = StyleSheet.create({
 
   amount: {
     fontSize: 20,
-
   },
 
   rate: {
@@ -200,5 +210,3 @@ const styles = StyleSheet.create({
     fontSize: 15,
   },
 });
-
-export default Currency;

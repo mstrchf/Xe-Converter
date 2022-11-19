@@ -3,7 +3,6 @@ import {
   StyleSheet,
   ScrollView,
   Text,
-  TouchableOpacity,
   Pressable,
   KeyboardAvoidingView,
 } from "react-native";
@@ -44,7 +43,29 @@ const currencyData = [
 ];
 
 function Converter() {
-  const [currencies, setCurrencies] = React.useState(currencyData);
+  const [currencies, setCurrencies] = React.useState([]);
+  async function getCurrencies() {
+    const options = {
+      method: 'GET',
+      headers: {
+        'accept': 'application/json',
+        'Authorization': 'Basic bWFyaW5haW50ZXJuYXRpb25hbHNjaG9vbDU1MzgxMDkzMjphaTJsdjE0cW5pNmdyMGZ2MWJvNWVhY3Q5aw=='
+      }
+    };
+    
+    const response = await fetch('https://xecdapi.xe.com/v1/currencies?additionalInfo=symbol', options)
+    const data = await response.json()
+    const myData = data.currencies
+    setCurrencies(myData.slice(0, 5))
+  }
+
+
+
+  React.useEffect(() => {
+    getCurrencies()
+  }, []);
+
+// getCurrencies()
 
   function handleSetCurrency(iso) {
     setCurrencies((prevCurrencies) => {
