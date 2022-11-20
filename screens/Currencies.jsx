@@ -1,19 +1,22 @@
 import React from "react";
 import {
   SafeAreaView,
-  TouchableHighlight,
-  View,
   FlatList,
   StyleSheet,
   Text,
   StatusBar,
   ActivityIndicator,
+  TouchableOpacity,
 } from "react-native";
+import { Ionicons, FontAwesome, Entypo } from "@expo/vector-icons";
 
-const Item = ({ title }) => (
-  <TouchableHighlight style={styles.item}>
-    <Text style={styles.title}>{title}</Text>
-  </TouchableHighlight>
+
+const Item = ({ iso, name  }) => (
+  <TouchableOpacity activeOpacity={0.7} style={styles.item}>
+  <Ionicons name="person-circle-outline" size={24} color="black" />
+    <Text style={styles.iso}>{iso}</Text>
+    <Text style={styles.name}>{name} </Text>
+  </TouchableOpacity>
 );
 
 const App = () => {
@@ -42,7 +45,7 @@ const App = () => {
     getCurrencies()
   }, [])
 
-  const renderItem = ({ item }) => <Item title={item.iso} />;
+  const renderItem = ({ item }) => <Item iso={item.iso} name={item.currency_name} />;
 
   return (
     <SafeAreaView style={styles.container}>
@@ -65,14 +68,23 @@ const styles = StyleSheet.create({
     marginTop: StatusBar.currentHeight || 0,
   },
   item: {
-    backgroundColor: "#f9c2ff",
-    padding: 20,
-    marginVertical: 8,
-    marginHorizontal: 16,
+    flexDirection: 'row',
+    alignItems: 'center',
+    padding: 16,
+    borderBottomWidth: 1,
+    borderBottomColor: '#24242433',
   },
-  title: {
-    fontSize: 32,
+  iso: {
+    fontSize: 18,
+    marginHorizontal: 10,
+    fontWeight: '300'
   },
+
+  name: {
+    fontSize: 18,
+    color: '#24242488',
+    fontWeight: '300'
+  }
 });
 
 export default App;
