@@ -6,36 +6,18 @@ import {
   TextInput,
 } from "react-native";
 import React, { useRef } from "react";
-import { Ionicons, FontAwesome, Entypo } from "@expo/vector-icons";
+import { Ionicons, Entypo } from "@expo/vector-icons";
+import {CountryFlag} from 'react-native-flag-creator'
+import Send from "./Send";
 
-const Send = () => {
-  return (
-    <View style={styles.send}>
-      <View style={styles.sendLeft}>
-        <FontAwesome
-          name="send-o"
-          size={20}
-          color="#ffffde"
-          style={{ marginRight: 10 }}
-        />
-        <Text style={styles.sendText}>Send USD to GMD</Text>
-      </View>
-      <View style={styles.sendRight}>
-        <Text style={styles.sendText}>view quote</Text>
-        <Entypo
-          name="chevron-thin-right"
-          size={18}
-          color="#ffffde"
-          style={{ marginLeft: 10 }}
-        />
-      </View>
-    </View>
-  );
-};
-
-export default function Currency({ iso, symbol, active, handleSetCurrency, navigation }) {
+export default function Currency({
+  iso,
+  symbol,
+  active,
+  handleSetCurrency,
+  navigation,
+}) {
   let inputRef = useRef(null);
-
 
   return (
     <View
@@ -53,12 +35,13 @@ export default function Currency({ iso, symbol, active, handleSetCurrency, navig
       <View style={styles.card}>
         <TouchableOpacity
           onPress={() => {
-
-            active ? navigation.navigate('Currencies') : handleSetCurrency(iso);
+            active ? navigation.navigate("Currencies") : handleSetCurrency(iso);
           }}
           style={styles.currencySelection}
         >
-          <Ionicons name="person-circle-outline" size={24} color="black" />
+          {/* <Ionicons name="person-circle-outline" size={24} color="black" /> */}
+          <CountryFlag style={{borderRadius: 12, width: 24, height: 24}} countryCode='gm'/>
+          
           <Text style={styles.currencyName}>{iso}</Text>
           {active && (
             <Entypo name="chevron-thin-down" size={18} color="#242424aa" />

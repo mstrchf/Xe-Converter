@@ -5306,6 +5306,11 @@ react-native-codegen@^0.70.6:
     jscodeshift "^0.13.1"
     nullthrows "^1.1.1"
 
+react-native-flag-creator@^1.0.4:
+  version "1.0.4"
+  resolved "https://registry.yarnpkg.com/react-native-flag-creator/-/react-native-flag-creator-1.0.4.tgz#a6e59a7a50dc9a47e99a08206698a2bfb5f4f361"
+  integrity sha512-QJLLUh3qq6e3xisa6X5u+aH9nig3vE90rOqpGIovppuE4N0bOPvQMMQu9KAOiuSb92xU85Ve27wk8yQ5FB/QTw==
+
 react-native-flags@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/react-native-flags/-/react-native-flags-1.0.0.tgz#8bf99b58e125ca6057d7923549132b3579754ed3"
