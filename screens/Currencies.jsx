@@ -8,12 +8,22 @@ import {
   ActivityIndicator,
   TouchableOpacity,
 } from "react-native";
-import { Ionicons, FontAwesome, Entypo } from "@expo/vector-icons";
+import { CountryFlag } from "react-native-flag-creator";
+import {getCurrencies} from '../lib/requests'
 
 
-const Item = ({ iso, name  }) => (
-  <TouchableOpacity activeOpacity={0.7} style={styles.item}>
-  <Ionicons name="person-circle-outline" size={24} color="black" />
+
+const Item = ({ iso, name, countrycode }) => (
+  <TouchableOpacity
+    activeOpacity={0.7}
+    style={styles.item}
+    onPress={console.log("add item")}
+  >
+    {/* <Ionicons name="person-circle-outline" size={24} color="black" /> */}
+    <CountryFlag
+      style={{ borderRadius: 12, width: 24, height: 24 }}
+      countryCode={countrycode}
+    />
     <Text style={styles.iso}>{iso}</Text>
     <Text style={styles.name}>{name} </Text>
   </TouchableOpacity>
@@ -21,31 +31,29 @@ const Item = ({ iso, name  }) => (
 
 const App = () => {
   const [currencies, setCurrencies] = React.useState([]);
+  
 
-  async function getCurrencies() {
-    const options = {
-      method: "GET",
-      headers: {
-        accept: "application/json",
-        Authorization:
-          "Basic bWFyaW5haW50ZXJuYXRpb25hbHNjaG9vbDU1MzgxMDkzMjphaTJsdjE0cW5pNmdyMGZ2MWJvNWVhY3Q5aw==",
-      },
-    };
 
-    const response = await fetch(
-      "https://xecdapi.xe.com/v1/currencies?additionalInfo=symbol",
-      options
-    );
-    const data = await response.json();
-    const myData = data.currencies;
-    setCurrencies(myData);
+  async function cur() {
+    let cur = await getCurrencies()
+    setCurrencies(cur)
   }
 
+  
   React.useEffect(() => {
-    getCurrencies()
-  }, [])
 
-  const renderItem = ({ item }) => <Item iso={item.iso} name={item.currency_name} />;
+    cur()
+
+  }, []);
+
+  const renderItem = ({ item }) => (
+    <Item
+      key={item.CountryISOTwoLetterCode}
+      iso={item.ISOCurrencyCode}
+      countrycode={item.CountryISOTwoLetterCode}
+      name={item.CountryName}
+    />
+  );
 
   return (
     <SafeAreaView style={styles.container}>
@@ -55,7 +63,6 @@ const App = () => {
         <FlatList
           data={currencies}
           renderItem={renderItem}
-          keyExtractor={(item) => item.iso}
         />
       )}
     </SafeAreaView>
@@ -68,23 +75,23 @@ const styles = StyleSheet.create({
     marginTop: StatusBar.currentHeight || 0,
   },
   item: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
     padding: 16,
     borderBottomWidth: 1,
-    borderBottomColor: '#24242433',
+    borderBottomColor: "#24242433",
   },
   iso: {
     fontSize: 18,
     marginHorizontal: 10,
-    fontWeight: '300'
+    fontWeight: "300",
   },
 
   name: {
     fontSize: 18,
-    color: '#24242488',
-    fontWeight: '300'
-  }
+    color: "#24242488",
+    fontWeight: "300",
+  },
 });
 
 export default App;

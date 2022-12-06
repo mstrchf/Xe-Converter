@@ -1,39 +1,13 @@
 import { StatusBar } from "expo-status-bar";
-import { StyleSheet, Text, View, TouchableOpacity, Image } from "react-native";
+import { StyleSheet, View, Image } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import React from "react";
-const logo = require('./assets/xe.png') 
+const logo = require("./assets/xe.png");
+
+// screens
 import Converter from "./screens/Converter";
-import Currencies from "./screens/Currencies"
-
-function HomeScreen({ navigation }) {
-  return (
-    <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
-      <Text style={styles.mainText}>Home Screen</Text>
-      <TouchableOpacity
-        style={styles.button}
-        onPress={() => navigation.navigate("Main")}
-      >
-        <Text style={styles.buttonText}>Go to Main</Text>
-      </TouchableOpacity>
-    </View>
-  );
-}
-
-function MainScreen({ navigation }) {
-  return (
-    <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
-      <Text style={styles.mainText}>Main Screen</Text>
-      <TouchableOpacity
-        style={styles.button}
-        onPress={() => navigation.navigate("Home")}
-      >
-        <Text style={styles.buttonText}>Go to Home</Text>
-      </TouchableOpacity>
-    </View>
-  );
-}
+import Currencies from "./screens/Currencies";
 
 function Loader() {
   return (
@@ -44,7 +18,7 @@ function Loader() {
         justifyContent: "center",
       }}
     >
-    <Image source={logo}/>
+      <Image source={logo} />
     </View>
   );
 }
@@ -53,6 +27,25 @@ const Stack = createNativeStackNavigator();
 
 export default function App() {
   const [isLoading, setIsLoading] = React.useState(true);
+
+  function sanitizeData(myData) {
+    let myKeys = Object.keys(myData.conversion_rates);
+    let final = newData.map((dt) => {
+      let obj;
+      myKeys.forEach((key) => {
+        if (dt.code === key) {
+          obj = {
+            ...dt,
+            code: key,
+            rate: myData.conversion_rates[key],
+            active: false,
+          };
+        }
+      });
+
+      return obj;
+    });
+  }
 
   setTimeout(() => {
     setIsLoading(false);

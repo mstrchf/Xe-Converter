@@ -9,35 +9,30 @@ import {
 } from "react-native";
 import { AntDesign } from "@expo/vector-icons";
 import Currency from "../components/Currency";
-function Converter({navigation}) {
-  const [currencies, setCurrencies] = React.useState([]);
-  async function getCurrencies() {
-    const options = {
-      method: "GET",
-      headers: {
-        accept: "application/json",
-        Authorization:
-          "Basic bWFyaW5haW50ZXJuYXRpb25hbHNjaG9vbDU1MzgxMDkzMjphaTJsdjE0cW5pNmdyMGZ2MWJvNWVhY3Q5aw==",
-      },
-    };
 
-    const response = await fetch(
-      "https://xecdapi.xe.com/v1/currencies?additionalInfo=symbol",
-      options
-    );
-    const data = await response.json();
-    const myData = data.currencies;
-    setCurrencies(myData.slice(0, 5));
+// libraries
+import {getCurrencies} from '../lib/requests'
+
+function Converter({ navigation }) {
+  const [currencies, setCurrencies] = React.useState([]);
+
+  async function cur() {
+    let cur = await getCurrencies()
+    setCurrencies(cur.slice(0, 5))
   }
 
+  
   React.useEffect(() => {
-    getCurrencies();
+  
+    cur()
+    
+    // setCurrencies(cur)    
   }, []);
 
-  function handleSetCurrency(iso) {
+  function setActiveCurrency(iso) {
     setCurrencies((prevCurrencies) => {
       return prevCurrencies.map((currency) => {
-        if (currency.iso === iso) {
+        if (currency.CountryISOTwoLetterCode === iso) {
           return { ...currency, active: true };
         } else {
           return { ...currency, active: false };
@@ -51,9 +46,10 @@ function Converter({navigation}) {
       return [
         ...prevCurrencies,
         {
-          iso: `&${prevCurrencies.length + 1}`,
-          currency_name: `Test Money ${prevCurrencies.length + 1}`,
-          is_obsolete: false,
+          CountryISOTwoLetterCode: `&${prevCurrencies.length + 1}`,
+          CountryName: `Test Money ${prevCurrencies.length + 1}`,
+          CurrencySymbol: '&',
+          ISOCurrencyCode: 'TST',
           active: false,
         },
       ];
@@ -72,16 +68,25 @@ function Converter({navigation}) {
         ) : (
           currencies.map((currency) => (
             <Currency
-              key={currency.iso}
+              key={currency.CountryISOTwoLetterCode}
               active={currency.active}
-              iso={currency.iso}
-              symbol={currency.currency_symbol}
-              handleSetCurrency={handleSetCurrency}
+              code={currency.ISOCurrencyCode}
+              country={currency.CountryName}
+              countrycode={currency.CountryISOTwoLetterCode}
+              symbol={currency.CurrencySymbol}
+              rate={currency.rate}
+              handleSetCurrency={setActiveCurrency}
               navigation={navigation}
             />
           ))
         )}
-        <Pressable onPress={addCurrency} style={styles.addCurrency}>
+        <Pressable
+          onPress={() => {
+            // navigation.navigate("Currencies");
+            addCurrency()
+          }}
+          style={styles.addCurrency}
+        >
           <AntDesign name="plus" size={16} color="#059BFF" />
           <Text style={styles.text}>Add Currency</Text>
         </Pressable>

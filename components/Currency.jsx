@@ -11,7 +11,9 @@ import {CountryFlag} from 'react-native-flag-creator'
 import Send from "./Send";
 
 export default function Currency({
-  iso,
+  code,
+  countrycode,
+  rate,
   symbol,
   active,
   handleSetCurrency,
@@ -35,28 +37,28 @@ export default function Currency({
       <View style={styles.card}>
         <TouchableOpacity
           onPress={() => {
-            active ? navigation.navigate("Currencies") : handleSetCurrency(iso);
+            active ? navigation.navigate("Currencies") : handleSetCurrency(countrycode);
           }}
           style={styles.currencySelection}
         >
           {/* <Ionicons name="person-circle-outline" size={24} color="black" /> */}
-          <CountryFlag style={{borderRadius: 12, width: 24, height: 24}} countryCode='gm'/>
+          <CountryFlag style={{borderRadius: 12, width: 24, height: 24}} countryCode={countrycode}/>
           
-          <Text style={styles.currencyName}>{iso}</Text>
+          <Text style={styles.currencyName}>{code}</Text>
           {active && (
             <Entypo name="chevron-thin-down" size={18} color="#242424aa" />
           )}
         </TouchableOpacity>
         <TouchableOpacity
           onPress={() => {
-            handleSetCurrency(iso);
+            handleSetCurrency(countrycode);
             inputRef.current.focus();
           }}
           style={styles.exchange}
         >
           <View style={{ flexDirection: "row", flexWrap: "wrap" }}>
             <Text style={[styles.amount, { marginRight: 5 }]}>
-              {symbol ? symbol : iso}
+              {symbol ? symbol : code}
             </Text>
             <TextInput
               ref={inputRef}
@@ -65,13 +67,13 @@ export default function Currency({
               placeholder="0.00"
               textAlign="right"
               onFocus={() => {
-                handleSetCurrency(iso);
+                handleSetCurrency(countrycode);
               }}
               maxLength={9}
             />
           </View>
 
-          {!active && <Text style={styles.rate}>1 USD = 60 GMD</Text>}
+          {!active && <Text style={styles.rate}>1 USD = {rate} {code}</Text>}
         </TouchableOpacity>
 
         <TouchableOpacity
