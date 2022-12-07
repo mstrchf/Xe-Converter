@@ -9,15 +9,13 @@ import {
   TouchableOpacity,
 } from "react-native";
 import { CountryFlag } from "react-native-flag-creator";
-import {getCurrencies} from '../lib/requests'
-
-
+import { getCurrencies } from "../lib/requests";
 
 const Item = ({ iso, name, countrycode }) => (
   <TouchableOpacity
     activeOpacity={0.7}
     style={styles.item}
-    onPress={console.log("add item")}
+    // onPress={}
   >
     {/* <Ionicons name="person-circle-outline" size={24} color="black" /> */}
     <CountryFlag
@@ -31,19 +29,14 @@ const Item = ({ iso, name, countrycode }) => (
 
 const App = () => {
   const [currencies, setCurrencies] = React.useState([]);
-  
-
 
   async function cur() {
-    let cur = await getCurrencies()
-    setCurrencies(cur)
+    let cur = await getCurrencies();
+    setCurrencies(cur);
   }
 
-  
   React.useEffect(() => {
-
-    cur()
-
+    cur();
   }, []);
 
   const renderItem = ({ item }) => (
@@ -60,10 +53,7 @@ const App = () => {
       {currencies.length < 1 ? (
         <ActivityIndicator />
       ) : (
-        <FlatList
-          data={currencies}
-          renderItem={renderItem}
-        />
+        <FlatList data={currencies} renderItem={renderItem} />
       )}
     </SafeAreaView>
   );
